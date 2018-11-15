@@ -230,3 +230,26 @@ bool nvm_chip_erase (void)
     nvm_wait_enabled () &&
     nvm_controller_busy_wait ();
 }
+
+bool nvm_prog_fuse (uint8_t fusenum, uint8_t data)
+{
+  if (fusenum > 5)
+    return false;
+
+  uint32_t addr = 0x008f0020 + fusenum;
+  uint8_t fusebyte = data;
+  char fuse_cmd[] = {
+    STS | (SZ_4 << 2) | SZ_1,
+    (addr      ) & 0xff,
+    (addr >>  8) & 0xff,
+    (addr >> 16) & 0xff,
+    (addr >> 24) & 0xff,
+    fusebyte
+  };
+
+  return
+    nvm_controller_busy_wait () &&
+    nvm_loadcmd (NVM_WRITE_FUSE) &&
+    pdi_send (fuse_cmd, sizeof (fuse_cmd)) &&
+    nvm_controller_busy_wait ();
+}

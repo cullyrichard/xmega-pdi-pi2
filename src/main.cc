@@ -81,6 +81,7 @@ void syntax (const char *name)
     "  -s pdidelay    set PDI clock delay, in us\n"
     "  -D len@offs    dump memory, len bytes from (baseaddr + offs)\n"
     "  -E             perform chip erase\n"
+    "  -f num=data,.. set fuses (0=0xff,2=0xbf etc)\n"
     "  -F ihexfile    write ihexfile\n"
     "  -h             show this help\n"
     "\n"
@@ -111,6 +112,7 @@ int main (int argc, char *argv[])
   uint32_t dump_addr = 0, dump_len = 0;
   const char *fname = 0;
   bool chip_erase = false;
+  bool prog_fuse = false;
 
   page_map_256_t page_map;
 
@@ -138,12 +140,30 @@ int main (int argc, char *argv[])
       }
       case 'F': fname = optarg; break;
       case 'E': chip_erase = true; break;
+      case 'f':
+      {
+        int subval;
+        char* subopt = optarg;
+        while (*subopt != '\0')
+        {
+          int16_t fuseval = -1;
+          char* fusedata;
+          char* optstr[] = {"0", "1", "2", "3", "4", "5", NULL};
+          subval = getsubopt (&subopt, optstr, &fusedata);
+          if (fusedata)
+            fuseval = strtoul (fusedata, 0, 0);
+          if (subval >= 0 && subval <= 5)
+            fusevalues[subval] = fuseval;
+          prog_fuse = true;
+        }
+        break;
+      }
       case 'h': // fall through
       default: syntax (argv[0]); break;
     }
   }
 
-  if (!dump_mem && !fname && !chip_erase)
+  if (!dump_mem && !fname && !chip_erase && !prog_fuse)
     syntax (argv[0]);
 
   if (dump_mem && (fname || chip_erase))
@@ -215,6 +235,23 @@ int main (int argc, char *argv[])
     {
       set_errinfo ("failed to perform chip erase", -1);
       bail_out (11);
+    }
+  }
+
+  if (prog_fuse)
+  {
+    for (int i = 0; i < 6; i++)
+    {
+      int16_t val = fusevalues[i];
+      if (val > 0)
+      {
+        printf("Setting fuse %x to 0x%02x\n", i, val);
+        if (!nvm_prog_fuse (i, val))
+        {
+          set_errinfo ("failed to program fuse", -1);
+          bail_out (11);
+        }
+      }
     }
   }
 

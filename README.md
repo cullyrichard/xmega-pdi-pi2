@@ -30,6 +30,7 @@ The xmega-pdi-pi2 tool provides the following features:
 
   - Chip erase functionality
   - Flashing (page erase+write) of application & boot areas
+  - Program fuses
   - Dumping existing flash content
   - Intel HEX input file support (.ihex files)
   - Configurable GPIO selection
@@ -50,6 +51,7 @@ syntax: ./pdi [-h] [-q] [-a baseaddr] [-b] [-c clkpin] [-d datapin] [-s pdidelay
   -s pdidelay    set PDI clock delay, in us
   -D len@offs    dump memory, len bytes from (baseaddr + offs)
   -E             perform chip erase
+  -f num=data,.. set fuses (0=0xff,2=0xbf etc)
   -F ihexfile    write ihexfile
   -h             show this help
 ```
@@ -144,5 +146,4 @@ Known limitations
   - Only tested with XMEGA32A4U
   - Assumes a flash page size of 256 bytes
   - No support for writing to EEPROM
-  - No support for FUSEs
 

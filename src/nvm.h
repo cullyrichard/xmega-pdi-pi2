@@ -16,5 +16,6 @@ bool nvm_wait_enabled (void);
 bool nvm_read (uint32_t addr, char *buf, uint32_t len);
 bool nvm_rewrite_page (uint32_t addr, const char *buf, uint16_t len);
 bool nvm_chip_erase (void);
+bool nvm_prog_fuse (uint8_t fusenum, uint8_t data);
 
 #endif
