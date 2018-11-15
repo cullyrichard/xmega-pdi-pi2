@@ -113,6 +113,7 @@ int main (int argc, char *argv[])
   const char *fname = 0;
   bool chip_erase = false;
   bool prog_fuse = false;
+  int16_t fusevalues[6] = {-1, -1, -1, -1, -1, -1};
 
   page_map_256_t page_map;
 
