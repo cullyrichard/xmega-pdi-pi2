@@ -118,7 +118,7 @@ int main (int argc, char *argv[])
   page_map_256_t page_map;
 
   int opt;
-  while ((opt = getopt (argc, argv, "a:bc:d:h:s:qD:F:E")) != -1)
+  while ((opt = getopt (argc, argv, "a:bc:d:h:s:qD:F:Ef:")) != -1)
   {
     switch (opt)
     {
