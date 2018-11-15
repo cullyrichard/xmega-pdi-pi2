@@ -141,8 +141,8 @@ and typing 'make' in the extracted directory.
 Known limitations
 -----------------
 
-  - Only tested with XMEGA256A3
-  - Assumes a flash page size of 512 bytes
+  - Only tested with XMEGA32A4U
+  - Assumes a flash page size of 256 bytes
   - No support for writing to EEPROM
   - No support for FUSEs
 
