@@ -209,7 +209,7 @@ bool pdi_open (void)
   // put device into PDI mode
   bcm2835_gpio_set (pdi.data);
   bcm2835_delayMicroseconds (1); // xmega256a3 says 90-1000ns reset pulse width
-  blind_clock (0); // next, 16 pdi_clk cycles within 100us
+  blind_clock (16); // next, 16 pdi_clk cycles within 100us
 
   static const char init[] = {
     STCS | PDI_REG_CONTROL, 0x07, // 2 idle bits
