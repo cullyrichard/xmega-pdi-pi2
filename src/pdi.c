@@ -187,7 +187,7 @@ bool pdi_init (uint8_t clk_pin, uint8_t data_pin, uint16_t delay_us)
   pdi.clk = clk_pin;
   pdi.data = data_pin;
   pdi.delay_us = delay_us;
-  pdi.timeout_ticks = 200000; // enough?
+  pdi.timeout_ticks = 100000; // enough?
 
   struct sched_param sp;
   memset (&sp, 0, sizeof (sp));
